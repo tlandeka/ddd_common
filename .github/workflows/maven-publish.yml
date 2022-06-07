@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 jobs:
-  unit-test:
+  build-and-release:
 
     runs-on: ubuntu-latest
     permissions:
@@ -27,3 +27,11 @@ jobs:
 
       - name: Test with Maven
         run: mvn test
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Publish to GitHub Packages Apache Maven
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
